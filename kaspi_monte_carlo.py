@@ -51,7 +51,7 @@ JUMP_STD        = 0.06   # jump size volatility
 CONFIDENCE      = 0.95   # for VaR / Expected Shortfall
 RANDOM_SEED     = 42
 
-OUTPUT_DIR      = "/mnt/user-data/outputs"
+OUTPUT_DIR      = "outputs"
 # ---------------------------------------------------------------------
 
 np.random.seed(RANDOM_SEED)
