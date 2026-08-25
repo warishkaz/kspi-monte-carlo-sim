@@ -33,7 +33,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy import stats
 
-# ----------------------------- CONFIG ------------------------------
+#CONFIGURATIONS FOR THE PROJECT
 CSV_PATH        = "kaspi_prices.csv"   # set to your own historical data file
 TICKER_LABEL    = "KSPI (Kaspi.kz)"
 
@@ -52,12 +52,12 @@ CONFIDENCE      = 0.95   # for VaR / Expected Shortfall
 RANDOM_SEED     = 42
 
 OUTPUT_DIR      = "outputs"
-# ---------------------------------------------------------------------
+# END
 
 np.random.seed(RANDOM_SEED)
 
 
-# --------------------------- DATA LOADING -----------------------------
+#DATA LOADING
 def load_price_history(csv_path: str) -> pd.DataFrame:
     """Load historical prices from CSV, or fall back to a synthetic series."""
     if os.path.exists(csv_path):
@@ -94,7 +94,7 @@ def _generate_synthetic_history(n_days: int = 750, start_price: float = 90.0) ->
     return pd.DataFrame({"Date": dates, "Close": prices})
 
 
-# ------------------------ PARAMETER ESTIMATION -------------------------
+#PARAMETER ESTIMATION
 def estimate_parameters(prices: pd.Series) -> dict:
     log_returns = np.log(prices / prices.shift(1)).dropna()
 
@@ -110,7 +110,7 @@ def estimate_parameters(prices: pd.Series) -> dict:
     }
 
 
-# ------------------------------ MODELS ----------------------------------
+# MODELS
 def simulate_gbm(s0, mu, sigma, n_days, n_sims):
     dt = 1
     z = np.random.normal(size=(n_days, n_sims))
@@ -147,7 +147,7 @@ def simulate_jump_diffusion(s0, mu, sigma, n_days, n_sims,
     return np.vstack([np.full(n_sims, s0), paths])
 
 
-# ------------------------------ ANALYSIS ---------------------------------
+#ANALYSIS
 def compute_risk_metrics(terminal_prices, s0, confidence):
     returns = terminal_prices / s0 - 1
     var_pct = np.percentile(returns, (1 - confidence) * 100)
@@ -169,7 +169,7 @@ def compute_risk_metrics(terminal_prices, s0, confidence):
     }
 
 
-# ------------------------------ PLOTTING ----------------------------------
+#PLOTTINGW
 def plot_results(hist_df, paths, terminal_prices, metrics, s0, out_dir):
     os.makedirs(out_dir, exist_ok=True)
     n_days = paths.shape[0] - 1
